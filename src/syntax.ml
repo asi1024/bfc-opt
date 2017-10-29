@@ -1,8 +1,7 @@
 type exp =
-  | Const of int
   | Mem of int
-  | Plus of exp * exp
-  | Mult of exp * exp
+  | Plus of exp list * int
+  | Mult of exp list * int
 
 type instr = { ptr : int; mem : (int * exp) list }
 
@@ -25,10 +24,11 @@ let string_of_comlist cs =
     Array.init (!max_strnum + 1) (fun x -> x) |> Array.to_list
     |> List.map (fun x -> "char " ^ to_str x ^ " = 0; ") |> String.concat " " in
   let rec exp = function
-    | Const i -> string_of_int i
     | Mem i -> sp "*(ptr + %d)" i
-    | Plus (e1, e2) -> sp "(%s + %s)" (exp e1) (exp e2)
-    | Mult (e1, e2) -> sp "(%s * %s)" (exp e1) (exp e2) in
+    | Plus (es, i) ->
+       "(" ^ String.concat " + " (string_of_int i :: List.map exp es) ^ ")"
+    | Mult (es, i) ->
+       "(" ^ String.concat " * " (string_of_int i :: List.map exp es) ^ ")" in
   let instr instr =
     let memf f = List.mapi f instr.mem |> String.concat " " in
     memf (fun i (_, e) -> sp "%s = %s;" (to_str i) (exp e))
