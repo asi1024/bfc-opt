@@ -4,6 +4,7 @@ FILES[] =
 	src/lexer
 	src/main
 	src/syntax
+	src/optimize
 	src/parser
 
 USE_OCAMLFIND = true

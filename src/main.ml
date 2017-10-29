@@ -7,6 +7,7 @@ let compile in_name =
   let out_chan = open_out out_name in
   ( try
       let com = Parser.toplevel Lexer.main (Lexing.from_channel in_chan) in
+      let com = Optimize.opt com in
       output_string out_chan (Syntax.string_of_comlist com)
     with
     | Lexer.LexerError mes -> print_endline ("LexerError : " ^ mes)
