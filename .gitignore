@@ -18,3 +18,19 @@ _build/
 # oasis generated files
 setup.data
 setup.log
+
+# omake
+*.omc
+.omakedb
+.omakedb.lock
+lexer.ml
+parser.ml
+parser.mli
+
+# exec
+bfc
+bfc.opt
+
+# outputs
+*.c
+*.out
