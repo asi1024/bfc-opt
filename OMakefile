@@ -1,0 +1,32 @@
+PROGRAM = bfc
+
+FILES[] =
+	src/lexer
+	src/main
+	src/syntax
+	src/parser
+
+USE_OCAMLFIND = true
+MENHIR_ENABLED = true
+MENHIR_FLAGS += --infer --fixed-exception
+
+OCAMLPACKS[] =
+	menhirLib
+
+OCAMLYACC = menhir
+
+OCamlGeneratedFiles(src/main.ml)
+
+OCamlProgram($(PROGRAM), $(FILES))
+
+.DEFAULT: $(if $(BYTE_ENABLED), $(PROGRAM)) \
+          $(if $(NATIVE_ENABLED), $(PROGRAM))
+
+.SUBDIRS: src
+   println(Subdirectory $(CWD))
+
+.PHONY: clean
+clean:
+  rm -f \
+     $(filter-proper-targets $(glob $(addsuffix .*, $(FILES)))) \
+     $(PROGRAM) $(PROGRAM).byte $(PROGRAM).opt
