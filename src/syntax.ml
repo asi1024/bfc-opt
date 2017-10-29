@@ -30,10 +30,10 @@ let string_of_comlist cs =
     | Plus (e1, e2) -> sp "(%s + %s)" (exp e1) (exp e2)
     | Mult (e1, e2) -> sp "(%s * %s)" (exp e1) (exp e2) in
   let instr instr =
-    let memf f = List.map f instr.mem |> String.concat " " in
-    memf (fun (i, e) -> sp "%s = %s;" (to_str i) (exp e))
-    ^ sp " ptr += %d; " instr.ptr
-    ^ memf (fun (i, e) -> sp "*(ptr + %d) = %s;" i (exp e)) in
+    let memf f = List.mapi f instr.mem |> String.concat " " in
+    memf (fun i (_, e) -> sp "%s = %s;" (to_str i) (exp e))
+    ^ memf (fun i (p, _) -> sp "*(ptr + %d) = %s;" p (to_str i))
+    ^ sp " ptr += %d; " instr.ptr in
   let rec com = function
     | Input -> "*ptr = getchar();"
     | Output -> "putchar(*ptr);"
