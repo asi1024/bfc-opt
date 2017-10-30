@@ -15,10 +15,10 @@ ComList :
   | head=Com tail=ComList { head :: tail }
 
 Com :
-    RIGHT  { Instr { ptr = 1; mem = [] } }
+    RIGHT  { Instr { ptr =  1; mem = [] } }
   | LEFT   { Instr { ptr = -1; mem = [] } }
-  | INCR   { Instr { ptr = 0; mem = [ (0, Plus ([Mem 0], 1)) ] } }
-  | DECR   { Instr { ptr = 0; mem = [ (0, Plus ([Mem 0], -1)) ] } }
+  | INCR   { Instr { ptr =  0; mem = [(0, ([([0], 1)],  1))] } }
+  | DECR   { Instr { ptr =  0; mem = [(0, ([([0], 1)], -1))] } }
   | OUTPUT { Output }
   | INPUT  { Input }
   | BEGIN c=ComList END { Loop c }
